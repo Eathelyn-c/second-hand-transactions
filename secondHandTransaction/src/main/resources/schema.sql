@@ -1,0 +1,21 @@
+CREATE DATABASE IF NOT EXISTS `items` CHARACTER SET utf8mb4;
+USE `items`;
+
+-- ✅ 第1步:先创建 users 表(父表)
+CREATE TABLE IF NOT EXISTS users (
+     id INT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID(主键)',
+     username VARCHAR(50) NOT NULL UNIQUE COMMENT '用户名(唯一)',
+     password VARCHAR(255) NOT NULL COMMENT '密码（存储加密后的密文）'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1 COMMENT='用户表';
+
+-- ✅ 第2步:再创建 items 表(子表)
+CREATE TABLE IF NOT EXISTS items (
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '物品ID(主键)',
+    name VARCHAR(100) NOT NULL COMMENT '物品名称',
+    description TEXT COMMENT '物品描述',
+    price DECIMAL(10, 2) NOT NULL COMMENT '价格',
+    sellerId INT NOT NULL COMMENT '卖家ID(外键)',
+    FOREIGN KEY (sellerId) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1 COMMENT='二手物品表';
+
+
